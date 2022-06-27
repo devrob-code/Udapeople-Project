@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs: 
+  slack: circleci/slack@4.10.1
+
 # commands:
 #   destroy-environment:
 #     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -49,6 +52,14 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          mentions: "@EngineeringTeam"
+      # When there is a successful deployment, send a notification with a different template.
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
   build-backend:
     docker:
@@ -66,6 +77,14 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          mentions: "@EngineeringTeam"
+      # When there is a successful deployment, send a notification with a different template.
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
   test-frontend:
     docker:
@@ -83,7 +102,15 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-test
-                
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          mentions: "@EngineeringTeam"
+      # When there is a successful deployment, send a notification with a different template.
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+
   test-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -100,7 +127,15 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-test
-            
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          mentions: "@EngineeringTeam"
+      # When there is a successful deployment, send a notification with a different template.
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -119,7 +154,14 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-scan
-
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          mentions: "@EngineeringTeam"
+      # When there is a successful deployment, send a notification with a different template.
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -139,7 +181,14 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-test
-
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+          mentions: "@EngineeringTeam"
+      # When there is a successful deployment, send a notification with a different template.
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 #   deploy-infrastructure:
 #     docker:
 #       # Docker image here that supports AWS CLI
@@ -310,14 +359,20 @@ workflows:
   default:
     jobs:
       - build-frontend
+          context: slack-secrets
       - build-backend
+          context: slack-secrets
       - test-frontend:
+          context: slack-secrets
           requires: [build-frontend]
       - test-backend:
+          context: slack-secrets
           requires: [build-backend]
       - scan-backend:
+          context: slack-secrets
           requires: [build-backend]
       - scan-frontend:
+          context: slack-secrets
           requires: [build-frontend]
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
