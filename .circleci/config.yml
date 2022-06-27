@@ -109,7 +109,7 @@ jobs:
       - restore_cache:
           keys: [frontend-scan]
       - run:
-          name: Scan front-end
+          name: Scan frontend dependencies
           command: |
             cd frontend
             npm install
@@ -127,7 +127,7 @@ jobs:
       - restore_cache:
           keys: [backend-scan]
       - run:
-          name: Back-end scan
+          name: Scan backend dependencies
           command: |
             cd backend
             npm install
