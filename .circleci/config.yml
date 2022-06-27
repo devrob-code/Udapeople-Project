@@ -125,11 +125,10 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-          mentions: "@EngineeringTeam"
       # When there is a successful deployment, send a notification with a different template.
       - slack/notify:
           event: pass
-          template: success_tagged_deploy_1
+          template: basic_success_1
   scan-backend:
     docker:
       - image: circleci/node:13.8.0
@@ -152,11 +151,10 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-          mentions: "@EngineeringTeam"
       # When there is a successful deployment, send a notification with a different template.
       - slack/notify:
           event: pass
-          template: success_tagged_deploy_1
+          template: basic_success_1
 #   deploy-infrastructure:
 #     docker:
 #       # Docker image here that supports AWS CLI
@@ -333,18 +331,8 @@ workflows:
       - test-backend:
           requires: [build-backend]
       - scan-backend:
-          context: 
-            - slack-secrets
-          filters:
-            tags:
-              only: /^v.*/
           requires: [build-backend]
       - scan-frontend:
-          context: 
-            - slack-secrets
-          filters:
-            tags:
-              only: /^v.*/
           requires: [build-frontend]
       # - deploy-infrastructure:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
