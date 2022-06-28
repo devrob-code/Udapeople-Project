@@ -161,7 +161,7 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-      # When there is a successful deployment, send a notification with a different template.
+      # When there is a successful deployment, send a notification with a different template1.
       - slack/notify:
           event: pass
           template: basic_success_1
@@ -178,8 +178,7 @@ jobs:
               --template-file .circleci/files/backend.yml \
               --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \  
-              --tags project=Udapeople            
-              
+              --tags project=Udapeople                         
       - run:
           name: Ensure front-end infrastructure exist
           command: |
