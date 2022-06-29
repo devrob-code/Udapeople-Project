@@ -214,7 +214,8 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible tar gzip curl nodejs npm
-            pip install aws-cli
+            pip install awscli
+            aws --version
   
       - run:
           name: Configure server
