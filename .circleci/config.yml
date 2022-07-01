@@ -307,6 +307,8 @@ jobs:
           fingerprints: ["17:5e:1c:5f:2b:b4:65:af:fa:ed:11:07:26:a9:93:52"] 
       - attach_workspace:
           at: ~/
+      - restore_cache:
+          keys: [backend-build]
       - run:
           name: Install dependencies
           command: |
@@ -314,7 +316,7 @@ jobs:
             pip install awscli
             aws --version
       - run:
-          name: zip artifact
+          name: Deploy backend
           command: |     
             cd backend
             npm i
@@ -324,9 +326,6 @@ jobs:
             tar -C backend -czvf artifact.tar.gz .
             mkdir .circleci/ansible/roles/deploy/files/
             mv artifact.tar.gz .circleci/ansible/roles/deploy/files/                            
-      - run:
-          name: Deploy backend
-          command: |
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt   
