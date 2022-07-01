@@ -324,9 +324,6 @@ jobs:
             mkdir .circleci/ansible/roles/deploy/files/
             mv artifact.tar.gz .circleci/ansible/roles/deploy/files/
             ls -lh .circleci/ansible/roles/deploy/files/
-            cd .circleci/ansible
-            echo "Contents  of the inventory.txt file is -------"
-            cat inventory.txt   
       - persist_to_workspace:
           root: ~/
           paths:
@@ -334,9 +331,11 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-            pwd
-            ls
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt   
             ansible-playbook -i inventory.txt deploy-backend.yml
+      # - destroy-environment:
       # - destroy-environment:
       #     circle_workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"   
 
