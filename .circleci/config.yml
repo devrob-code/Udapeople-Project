@@ -305,8 +305,6 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints: ["17:5e:1c:5f:2b:b4:65:af:fa:ed:11:07:26:a9:93:52"] 
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -332,13 +330,15 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/roles/deploy/files/artifact.tar.gz                                       
+            - project/.circleci/ansible/roles/deploy/files/artifact.tar.gz 
+      - attach_workspace:
+          at: ~/                                      
       - run:
           name: Deploy backend
           command: |
             ansible-playbook -i inventory.txt deploy-backend.yml
-      - destroy-environment:
-          circle_workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"   
+      # - destroy-environment:
+      #     circle_workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"   
 
 #   smoke-test:
 #     docker:
