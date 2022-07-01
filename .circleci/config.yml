@@ -16,8 +16,9 @@ commands:
           when: on_fail
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.circle_workflow_id >>
+            aws s3 rm s3://udapeople-<< parameters.circle_workflow_id >> --recursive
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.circle_workflow_id >>
-            aws s3 cp dist s3://udapeople-<< parameters.circle_workflow_id >> --recursive
+           
             
        
 
@@ -31,13 +32,11 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            if(( $SUCCESS==1 ));
-            then              
-              cd ~/project/backend
-              npm install
-              npm run migrations:revert
-            fi
+            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable           
+            cd ~/project/backend
+            npm install
+            npm run migrations:revert
+
             
             
 jobs:

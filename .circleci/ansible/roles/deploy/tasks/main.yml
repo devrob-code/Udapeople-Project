@@ -1,7 +1,7 @@
 ---
 - name: "Extract Artifact"
   shell: |
-    tar -xvfz backend.tar
+    tar -xvfz artifact.tar.gz
 
 - name: Executing node
   shell: |
