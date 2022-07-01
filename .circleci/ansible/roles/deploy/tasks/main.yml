@@ -1,15 +1,12 @@
 ---
-- name: "show folder"
-  shell: |
-    ls -lh
-
 - name: Copy index test page
   template:
-    src: "/project"
+    src: "/root/project/artifact.tar.gz"
     dest: "/"
 
 - name: "Extract Artifact"
   shell: |
+    pwd
     tar -xvfz artifact.tar.gz
 
 - name: Executing node
