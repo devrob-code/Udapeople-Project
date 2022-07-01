@@ -1,7 +1,7 @@
 ---
 - name: Copy artifact.tar.gz to EC2
   template:
-    src: "/artifact.tar.gz"
+    src: "./artifact.tar.gz"
     dest: "/home/ubuntu/artifact.tar.gz"
 
 - name: Executing node
