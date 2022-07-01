@@ -1,4 +1,9 @@
 ---
+- name: "print workinf directory"
+  shell: |
+    pwd
+    ls -lh
+
 - name: Copy artifact.tar.gz to EC2
   template:
     src: "root/project/artifact.tar.gz"
