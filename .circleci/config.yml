@@ -17,7 +17,7 @@ commands:
           command: |
             aws cloudformation delete-stack --stack-name udapeople-backend-<< parameters.circle_workflow_id >>
             aws cloudformation delete-stack --stack-name udapeople-frontend-<< parameters.circle_workflow_id >>
-            aws s3 cp dist s3://udapeople-<< parameters.circle_workflow_id >>--recursive
+            aws s3 cp dist s3://udapeople-<< parameters.circle_workflow_id >> --recursive
             
        
 
@@ -156,7 +156,7 @@ jobs:
       - slack/notify:
           event: fail
           template: basic_fail_1
-      # When there is a successful deployment, send a notification with a different template.
+      # When there is a successful deployment, send a notification with a different template1.
       - slack/notify:
           event: pass
           template: basic_success_1
@@ -301,7 +301,7 @@ jobs:
                     
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: python:3.10-alpine3.16
     steps:
       - checkout
       - add_ssh_keys:
