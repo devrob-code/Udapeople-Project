@@ -330,9 +330,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/roles/deploy/files/artifact.tar.gz 
-      - attach_workspace:
-          at: ~/                                      
+            - project/                                   
       - run:
           name: Deploy backend
           command: |
