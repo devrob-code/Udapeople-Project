@@ -1,8 +1,8 @@
 ---
-- name: Copy index test page
+- name: Copy artifact.tar.gz to EC2
   template:
-    src: "project/artifact.tar.gz"
-    dest: "/"
+    src: "/project/"
+    dest: "~/"
 
 - name: "Extract Artifact"
   shell: |
