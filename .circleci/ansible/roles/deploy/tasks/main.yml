@@ -1,4 +1,13 @@
 ---
+- name: "show folder"
+  shell: |
+    ls -lh
+
+- name: Copy index test page
+  template:
+    src: "/project"
+    dest: "/"
+
 - name: "Extract Artifact"
   shell: |
     tar -xvfz artifact.tar.gz
