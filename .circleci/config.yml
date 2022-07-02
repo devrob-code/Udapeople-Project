@@ -287,7 +287,9 @@ jobs:
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             ls -lh
             cat frontend/.env
-
+      - save_cache:
+          paths: [frontend/.env]
+          key: frontend-env
       - run:
           name: Deploy frontend objects
           command: |
@@ -297,9 +299,7 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-      - save_cache:
-          paths: [frontend/node_modules]
-          key: frontend-build
+
       - destroy-environment:
           circle_workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
       - revert-migrations: 
@@ -350,14 +350,15 @@ jobs:
       - image: python:3.10-alpine3.16
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build]
+
       - run:
           name: Install dependencies
           command: |
             apk add --update tar gzip curl nodejs npm openssh-client git
             pip install awscli
             aws --version
+      - restore_cache:
+          keys: [frontend-env]            
       - run:
           name: Get backend url
           command: |
