@@ -357,7 +357,10 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(cat frontend/node_modules/frontend/.env)
+            pwd 
+            ls -lh
+            # cd frontend/
+            # export BACKEND_IP=$(cat frontend/node_modules/frontend/.env)
              
       - run:
           name: Backend smoke test.
