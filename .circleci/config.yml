@@ -284,10 +284,6 @@ jobs:
             echo "${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
             cat frontend/.env
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/frontend/.env
       - run:
           name: Deploy frontend objects
           command: |
@@ -350,8 +346,8 @@ jobs:
       - image: python:3.10-alpine3.16
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
+      - restore_cache:
+          keys: [frontend-build]
       - run:
           name: Install dependencies
           command: |
@@ -361,7 +357,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP=$(cat project/frontend/.env)
+            export BACKEND_IP=$(cat frontend/node_modules/frontend/.env)
              
       - run:
           name: Backend smoke test.
