@@ -9,6 +9,7 @@
     cd /home/ubuntu/
     tar -xvfz artifact.tar.gz
     npm install
+    npm run start:prod
     pm2 stop default
     pm2 start npm -- start
 
