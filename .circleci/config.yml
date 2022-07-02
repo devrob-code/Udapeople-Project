@@ -360,14 +360,10 @@ jobs:
             aws --version
            
       - run:
-          name: Get backend url
+          name: Get backend url and Backend smoke test.
           command: |
             export BACKEND_IP=$(cat ~/env_vars.txt)
             # echo ${BACKEND_IP}
-      - run:
-          name: Backend smoke test.
-          command: |
-            echo ${BACKEND_IP}
             # Fetch and prepare the BACKEND_IP env var
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
