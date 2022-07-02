@@ -191,7 +191,8 @@ jobs:
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text) 
             echo "$backend_ec2_public_ip"  
-            echo "$backend_ec2_public_ip" > ~/env_vars.txt
+            echo "$backend_ec2_public_ip" >> ~/env_vars.txt
+            cat ~/env_vars.txt
             echo "$backend_ec2_public_ip" >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
