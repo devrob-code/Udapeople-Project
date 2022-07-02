@@ -265,6 +265,8 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/
       - restore_cache:
           keys: [frontend-build]
       - run:
@@ -283,6 +285,8 @@ jobs:
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             echo API_URL="http://${BACKEND_IP}:3030" >> frontend/.env
+            cd frontend/
+            ls -lh
             cat frontend/.env
       - run:
           name: Deploy frontend objects
@@ -360,7 +364,7 @@ jobs:
             cd frontend/ 
             ls -lh
             cat .env
-            # export BACKEND_IP=$(cat frontend/node_modules/frontend/.env)
+            export BACKEND_IP=$(cat frontend/.env)
              
       - run:
           name: Backend smoke test.
