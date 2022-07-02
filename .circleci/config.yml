@@ -190,16 +190,15 @@ jobs:
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --output text) 
-            touch env_vars 
             echo "$backend_ec2_public_ip"  
-            echo "$backend_ec2_public_ip" >> project/env_vars 
+            echo "$backend_ec2_public_ip" > ~/env_vars.txt
             echo "$backend_ec2_public_ip" >> .circleci/ansible/inventory.txt
             cat .circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-            - project/env_vars 
+            - env_vars.txt
       - destroy-environment:
           circle_workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}" 
 
@@ -362,10 +361,8 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            source project/env_vars
-            echo "${env_vars}"
-            export BACKEND_IP=$(env_vars)
-             
+            export BACKEND_IP=$(cat ~/env_vars.txt)
+            echo ${BACKEND_IP}
       - run:
           name: Backend smoke test.
           command: |
