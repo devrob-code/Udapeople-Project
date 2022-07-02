@@ -357,9 +357,9 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            pwd 
+            cd frontend/ 
             ls -lh
-            # cd frontend/
+            cat .env
             # export BACKEND_IP=$(cat frontend/node_modules/frontend/.env)
              
       - run:
