@@ -363,10 +363,11 @@ jobs:
           name: Get backend url
           command: |
             export BACKEND_IP=$(cat ~/env_vars.txt)
-            echo ${BACKEND_IP}
+            # echo ${BACKEND_IP}
       - run:
           name: Backend smoke test.
           command: |
+            echo ${BACKEND_IP}
             # Fetch and prepare the BACKEND_IP env var
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
