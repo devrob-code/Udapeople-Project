@@ -417,6 +417,10 @@ jobs:
             
             echo "OldWorkflowID: ${OldWorkflowID}"
             echo "Current Workflow Id: ${CIRCLE_WORKFLOW_ID:0:7}"
+      - persist_to_workspace:
+          root: ~/
+          paths: OldWorkflowID.txt
+
       - destroy-environment:
           circle_workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
       - revert-migrations: 
@@ -445,9 +449,7 @@ jobs:
               export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
                       --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
               echo Stack names: "${STACKS[@]}"  
-        - persist_to_workspace:
-            root: ~/
-            paths: OldWorkflowID.txt
+
         - attach_workspace:
             at: ~/
         - run:
