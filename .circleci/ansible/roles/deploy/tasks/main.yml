@@ -7,9 +7,8 @@
 - name: Executing node
   shell: |
     cd /home/ubuntu/
-    tar -xvfz artifact.tar.gz
+    tar -xvf artifact.tar.gz
     npm install
-    npm run start:prod
     pm2 stop default
     pm2 start npm -- start
 
