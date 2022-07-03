@@ -411,7 +411,7 @@ jobs:
             export OldWorkflowID=$(aws cloudformation \
             list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
             --no-paginate --output text)
-            echo "$OldWorflowID" >> ~/OldWorflowID.txt
+            echo "$OldWorflowID" >> ~/OldWorkflowID.txt
             cat ~/OldWorkflowID.txt
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
