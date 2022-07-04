@@ -420,6 +420,8 @@ jobs:
             
             echo "OldWorkflowID: ${OldWorkflowID}"
             echo "Current Workflow Id: ${CIRCLE_WORKFLOW_ID:0:7}"
+            cat ~/OldWorkflowID.txt
+
       - persist_to_workspace:
           root: ~/
           paths:
@@ -444,10 +446,12 @@ jobs:
         - run:
             name: Get old stack workflow id
             command: |
-              # Fetch the Old workflow ID
-              export OldWorkflowID=$(aws cloudformation \
-                list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-                --no-paginate --output text)
+            # Fetch the Old workflow ID
+              # export OldWorkflowID=$(aws cloudformation \
+              #   list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              #   --no-paginate --output text)
+              ls -lh
+              export OldWorkflowID=$(cat ~/OldWorkflowID.txt)
               echo "${OldWorkflowID}" 
               echo OldWorkflowID: "${OldWorkflowID}"
               echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
