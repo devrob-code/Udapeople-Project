@@ -401,8 +401,6 @@ jobs:
           name: Install dependencies
           command: |
             yum -y install tar gzip
-      - attach_workspace:
-          at: ~/
       - run:
           name: Update cloudfront distribution
           command: |
@@ -410,7 +408,7 @@ jobs:
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
             --no-paginate --output text)
             touch OldWorkflowID.txt
-            echo "$OldWorflowID" >> ~/OldWorkflowID.txt
+            echo "$OldWorkflowID" >> ~/OldWorkflowID.txt
             cat ~/OldWorkflowID.txt
             ls -lh
             pwd
