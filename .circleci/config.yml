@@ -409,6 +409,8 @@ jobs:
             --no-paginate --output text)
             echo "$OldWorflowID" >> ~/OldWorkflowID.txt
             cat ~/OldWorkflowID.txt
+            ls -lh
+            pwd
             aws cloudformation deploy \
               --template-file .circleci/files/cloudfront.yml \
               --stack-name InitialStack \
