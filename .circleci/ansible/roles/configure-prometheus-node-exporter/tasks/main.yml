@@ -28,7 +28,8 @@
 #     enabled: yes
 
 
-- name: Create user for Prometheus Node Expoter
+- name: Create user for Prometheus Node Exporter
+  become: true
   shell: |
     sudo useradd --no-create-home node_exporter
 
@@ -41,6 +42,7 @@
 
   
 - name: Creating a file with content
+  become: true
   copy:
     dest: "/etc/systemd/system/node-exporter.service"
     content: |
@@ -57,7 +59,8 @@
       [Install]
       WantedBy=multi-user.target
 
-- name: Create user for Prometheus Node Expoter
+- name: enable node_exporter service
+  become: true
   shell: |
     sudo systemctl daemon-reload
     sudo systemctl enable node-exporter
