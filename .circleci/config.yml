@@ -30,7 +30,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/P5thQCXKuMdbXnoXdEHU3o/migration_<< parameters.circle_workflow_id >>)
+            SUCCESS=$(curl --insecure  https://kvdb.io/JtC21xKq1BM1VeavscGjNG/migration_<< parameters.circle_workflow_id >>)
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then
@@ -210,7 +210,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["17:5e:1c:5f:2b:b4:65:af:fa:ed:11:07:26:a9:93:52"] 
+          fingerprints: ["5d:48:6b:1d:91:76:00:af:f6:97:93:0d:8a:74:d5:15"] 
       - attach_workspace:
           at: ~/
       - run:
@@ -254,8 +254,8 @@ jobs:
           command: |
               if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
               then
-                  # If you are using kvdb.io, generate the bucket ID "P5thQCXKuMdbXnoXdEHU3o" in your local terminal first
-                  curl https://kvdb.io/P5thQCXKuMdbXnoXdEHU3o/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+                  # If you are using kvdb.io, generate the bucket ID "JtC21xKq1BM1VeavscGjNG" in your local terminal first
+                  curl https://kvdb.io/JtC21xKq1BM1VeavscGjNG/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
               fi
       - save_cache:
           paths: [backend/node_modules]
@@ -312,7 +312,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["17:5e:1c:5f:2b:b4:65:af:fa:ed:11:07:26:a9:93:52"] 
+          fingerprints: ["5d:48:6b:1d:91:76:00:af:f6:97:93:0d:8a:74:d5:15"] 
       - attach_workspace:
           at: ~/
       - restore_cache:
@@ -377,7 +377,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-west-2.amazonaws.com/#/employees"            
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
             echo ${URL} 
             if curl -s ${URL} | grep "Welcome"
             then
