@@ -363,12 +363,12 @@ jobs:
       - run:
           name: Get backend url and Backend smoke test.
           command: |
-            export BACKEND_IP=$(cat ~/env_vars.txt)
-            # echo ${BACKEND_IP}
-            # Fetch and prepare the BACKEND_IP env var
+            export BACKEND_IP=$(aws ec2 describe-instances \
+              --query 'Reservations[*].Instances[*].PublicIpAddress' \
+              --filters "Name=tag:project,Values=udapeople" --output text)
             export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-            if curl "${API_URL}/api/status" | grep "ok"
+            echo "API_URL = ${API_URL}"
+            if curl ${API_URL}/api/status | grep "ok"
             then
                 return 0
             else
