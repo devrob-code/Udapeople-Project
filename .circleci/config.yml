@@ -127,11 +127,11 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
+      # - slack/notify:
+      #    event: fail
+      #    template: basic_fail_1
       # When there is a successful deployment, send a notification with a different template1.
-      - slack/notify:
+      # - slack/notify:
       #    event: pass
       #    template: basic_success_1
   scan-backend:
@@ -153,12 +153,12 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
-      - slack/notify:
+      #- slack/notify:
       #    event: fail
       #    template: basic_fail_1
       # When there is a successful deployment, send a notification with a different template1.
-      - slack/notify:
-      #    event: pass
+      # - slack/notify:
+      #    event:pass
       #    template: basic_success_1
 
   deploy-infrastructure:
