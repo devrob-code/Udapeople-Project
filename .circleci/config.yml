@@ -365,30 +365,10 @@ jobs:
       - image: python:3.10-alpine3.16
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
-            apk add --update tar gzip curl nodejs npm openssh-client git
-            pip install awscli
-            aws --version
-           
-      - run:
-          name: Get backend url and Backend smoke test.
-          command: |
-            export BACKEND_IP=$(cat ~/env_vars.txt)
-            # echo ${BACKEND_IP}
-            # Fetch and prepare the BACKEND_IP env var
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-            sleep 3m
-            if curl "${API_URL}/api/status" | grep "ok"
-            then
-                return 0
-            else
-                return 1
-            fi
+            apk add --update --no-cache tar gzip nodejs npm aws-cli curl
       - run:
           name: Frontend smoke test.
           command: |
@@ -401,11 +381,29 @@ jobs:
             else
               return 1
             fi
+
+      - run:
+          name: Backend smoke test.
+          command: |
+            export BACKEND_IP=$(aws ec2 describe-instances \
+            --query 'Reservations[*].Instances[*].PublicIpAddress' \
+            --filters Name=tag:aws:cloudformation:stack-name,Values=udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
+            --output text)
+    
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+            sleep 3m
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+                return 0
+            else
+                return 1
+            fi
       - destroy-environment:
-          circle_workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"  
-      - revert-migrations: 
-          circle_workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"    
-                     
+          workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert-migrations:
+          workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
+                   
 
   cloudfront-update:
     docker:
