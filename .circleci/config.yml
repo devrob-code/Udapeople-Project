@@ -28,7 +28,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/NBgM9V5hrof4HPa6ZKVUSq/migration_<< parameters.workflow-id >>)
+            SUCCESS=$(curl --insecure  https://kvdb.io/JtC21xKq1BM1VeavscGjNG/migration_<< parameters.workflow-id >>)
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then
@@ -131,13 +131,7 @@ jobs:
             npm install --save-dev webpack@5.73.0
             npm update mkdirp --depth 2
             npm audit --audit-level=critical
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
-
+      
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -182,7 +176,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["ad:b1:3a:7e:75:34:b8:1b:f1:c7:d7:3d:39:7a:70:e2"]
+          fingerprints: ["5d:48:6b:1d:91:76:00:af:f6:97:93:0d:8a:74:d5:15"]
       - attach_workspace:
           at: ~/
       - run:
@@ -241,7 +235,7 @@ jobs:
           command: |
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl --insecure https://kvdb.io/NBgM9V5hrof4HPa6ZKVUSq/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              curl --insecure https://kvdb.io/JtC21xKq1BM1VeavscGjNG/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
       - destroy-environment:
           workflow-id: ${CIRCLE_WORKFLOW_ID:0:7} 
@@ -284,7 +278,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["ad:b1:3a:7e:75:34:b8:1b:f1:c7:d7:3d:39:7a:70:e2"]
+          fingerprints: ["5d:48:6b:1d:91:76:00:af:f6:97:93:0d:8a:74:d5:15"]
       - attach_workspace:
           at: ~/
       - run:
@@ -408,7 +402,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-           fingerprints: ["ad:b1:3a:7e:75:34:b8:1b:f1:c7:d7:3d:39:7a:70:e2"]
+           fingerprints: ["5d:48:6b:1d:91:76:00:af:f6:97:93:0d:8a:74:d5:15"]
       - run:
           name: Install dependencies
           command: |
