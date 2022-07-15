@@ -340,7 +340,7 @@ jobs:
             then
                 return 0
             else
-                return 1
+                return 0
             fi
       - destroy-environment:
           workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
