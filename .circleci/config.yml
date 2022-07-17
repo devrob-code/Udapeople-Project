@@ -312,10 +312,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache tar gzip nodejs npm curl
+            apk add --update --no-cache tar gzip nodejs npm aws-cli curl
             pip install awscli
       - attach_workspace:
-          at: ~/
+          at: ~/      
       - run:
           name: Back-end Smoke Test
           command: |
