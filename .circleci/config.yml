@@ -137,9 +137,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install tar utility
-          command: |
-            yum install -y tar gzip
+          name: Install tar and gzip
+          command: yum install -y tar gzip
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -153,21 +152,32 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
-              --tags project=your-tag \
+              --tags project=udapeople \
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"
       - run:
+          name: Delete Old Backend Ip Address
+          command: |
+            OLD_WORKFLOW_ID=$(aws cloudformation list-exports --query "Exports[?Name==\`WorkflowID\`].Value" --no-paginate --output text)
+            OLD_BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${OLD_WORKFLOW_ID}" --output text)
+
+            echo $OLD_WORKFLOW_ID
+            echo $OLD_BACKEND_IP
+
+            sed -i -e '2d' ~/project/.circleci/ansible/inventory.txt
+
+            cat ~/project/.circleci/ansible/inventory.txt
+      - run:
           name: Add back-end ip to ansible inventory
           command: |
-            echo $(aws cloudformation describe-stacks --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
-            --query "Stacks[0].Outputs[?OutputKey=='EC2PublicIPAddress'].OutputValue" --output text) >> ~/project/.circleci/ansible/inventory.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text >> ~/project/.circleci/ansible/inventory.txt
             cat ~/project/.circleci/ansible/inventory.txt
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
       - destroy-environment:
-          workflow-id: ${CIRCLE_WORKFLOW_ID:0:7}
+          workflow_id: "${CIRCLE_WORKFLOW_ID:0:7}"
 
   configure-infrastructure:
     docker:
