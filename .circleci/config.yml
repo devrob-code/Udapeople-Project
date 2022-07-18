@@ -176,7 +176,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["5d:48:6b:1d:91:76:00:af:f6:97:93:0d:8a:74:d5:15"]
+          fingerprints: ["eb:09:5a:90:d6:08:2d:3b:79:b6:1a:7c:79:d0:e3:20"]
       - attach_workspace:
           at: ~/
       - run:
@@ -278,7 +278,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["5d:48:6b:1d:91:76:00:af:f6:97:93:0d:8a:74:d5:15"]
+          fingerprints: ["eb:09:5a:90:d6:08:2d:3b:79:b6:1a:7c:79:d0:e3:20"]
       - attach_workspace:
           at: ~/
       - run:
@@ -331,21 +331,10 @@ jobs:
             else
                 return 1
             fi
-      - run:
-          name: Frontend smoke test.
-          command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com/#/employees"            
-            echo ${URL} 
-            if curl -s ${URL} | grep "Welcome"
-            then
-              return 0
-            else
-              return 1
-            fi
-    #  - destroy-environment:
-    #      workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-    #  - revert_migration:
-    #        workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
+      - destroy-environment:
+          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      - revert_migration:
+            workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}  
 
   cloudfront-update:
     docker:
@@ -402,7 +391,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-           fingerprints: ["5d:48:6b:1d:91:76:00:af:f6:97:93:0d:8a:74:d5:15"]
+           fingerprints: ["eb:09:5a:90:d6:08:2d:3b:79:b6:1a:7c:79:d0:e3:20"]
       - run:
           name: Install dependencies
           command: |
