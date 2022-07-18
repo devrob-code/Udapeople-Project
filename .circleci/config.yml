@@ -182,7 +182,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update --no-cache tar gzip ansible aws-cli
-       - run:
+      - run:
           name: Install dependencies
           command: |
             apk add --update ansible
